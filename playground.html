@@ -6,12 +6,6 @@
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap" />
-    <script src="node_modules/blockly/blockly.min.js"></script>
-    <script src="renderer.js"></script>
-    <script src="theme.js"></script>
-    <script src="blocks/resizable_list.js"></script>
-    <script src="blocks/add_text.js"></script>
-    <script src="toolbox.js"></script>
     <style>
       html,
       body {
@@ -44,36 +38,5 @@
       <a href="index.html">Comparison with originals</a>
     </header>
     <div id="blocklyDiv"></div>
-    <script>
-      const STORAGE_KEY = 'thumbnail-playground';
-
-      // Measure text with the real font, not the fallback.
-      document.fonts.load('12.5pt "Google Sans"').then(() => {
-        const ws = Blockly.inject('blocklyDiv', {
-          renderer: 'thumbnail',
-          theme: 'thumbnail',
-          toolbox: TOOLBOX,
-          trashcan: true,
-          zoom: {controls: true, wheel: true, startScale: 1.5},
-          move: {scrollbars: true, drag: true, wheel: false},
-        });
-
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          Blockly.serialization.workspaces.load(JSON.parse(saved), ws);
-        }
-        ws.addChangeListener((e) => {
-          if (e.isUiEvent) return;
-          localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(Blockly.serialization.workspaces.save(ws)),
-          );
-        });
-
-        document.getElementById('clear').addEventListener('click', () => {
-          ws.clear();
-        });
-      });
-    </script>
   </body>
 </html>

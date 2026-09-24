@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Blockly from 'blockly';
+
 // Stand-ins for the made-up blocks that appear in the thumbnails.
 Blockly.common.defineBlocksWithJsonArray([
   {
@@ -55,7 +57,7 @@ const num = (n, shadow = false) => ({
  * and `warnings` are keyed by block id and applied after loading, because
  * neither is part of the serialized state.
  */
-const SCENES = [
+export const SCENES = [
   {
     // Not a thumbnail: empty sockets, which none of the originals show.
     name: 'empty-sockets',

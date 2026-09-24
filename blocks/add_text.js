@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Blockly from 'blockly';
+
 /**
  * The sample app's `add_text` block, ported from
  * ~/Code/testing/walkthrough-mutator-codelab/src/blocks/text.js.

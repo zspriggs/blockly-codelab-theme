@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Blockly from 'blockly';
+
 /**
  * The "thumbnail" renderer: Thrasos with the shapes, sizes and CSS from the
  * codelab card thumbnails. Colours live in the theme (theme.js); everything

@@ -4,13 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Blockly from 'blockly';
+
 /**
  * The mutator codelab's `resizable_list` block, ported from
  * ~/Code/testing/walkthrough-mutator-codelab (blocks/list.js,
  * mutators/list_mutator.js and the context menu items in index.js).
- *
- * The only change is using the global `Blockly` instead of ES imports, so it
- * shares the one Blockly instance that the renderer and theme register on.
  */
 
 Blockly.common.defineBlocksWithJsonArray([

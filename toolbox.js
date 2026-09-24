@@ -14,7 +14,7 @@ const shadowNum = (n) => ({shadow: {type: 'math_number', fields: {NUM: n}}});
 const shadowText = (t) => ({shadow: {type: 'text', fields: {TEXT: t}}});
 const blocks = (...types) => types.map((type) => ({kind: 'block', type}));
 
-const TOOLBOX = {
+export const TOOLBOX = {
   kind: 'categoryToolbox',
   contents: [
     {

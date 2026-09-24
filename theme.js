@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as Blockly from 'blockly';
+
 /**
  * The "thumbnail" theme: colours and font sampled from the codelab card
  * thumbnails. Pair it with the "thumbnail" renderer (renderer.js), which owns
