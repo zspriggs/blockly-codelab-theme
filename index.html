@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Thumbnail theme</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap" />
+    <script src="node_modules/blockly/blockly.min.js"></script>
+    <script src="renderer.js"></script>
+    <script src="theme.js"></script>
+    <script src="scenes.js"></script>
+    <style>
+      body {
+        font-family: 'Google Sans', sans-serif;
+        margin: 24px;
+      }
+      .scene {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .stage {
+        position: relative;
+        border: 1px solid #ddd;
+      }
+      .stage img.overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      .ref {
+        border: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      Left: Blockly with the thumbnail theme and renderer. Right: the original
+      thumbnail.
+      <label>
+        Overlay original:
+        <input id="overlay" type="range" min="0" max="1" step="0.05" value="0" />
+      </label>
+    </p>
+    <div id="scenes"></div>
+    <script>
+      const overlays = [];
+
+      async function renderScene(scene) {
+        const src = `reference/card_thumbnails_${scene.name}.png`;
+        const row = document.createElement('div');
+        row.className = 'scene';
+        row.innerHTML = `
+          <div class="stage" style="width:${scene.width}px;height:${scene.height}px">
+            <div class="ws" style="width:100%;height:100%"></div>
+            <img class="overlay" onerror="this.remove()" src="${src}" width="${scene.width}" height="${scene.height}">
+          </div>
+          <img class="ref" onerror="this.remove()" src="${src}" width="${scene.width}" height="${scene.height}">
+          <div>${scene.name}</div>`;
+        document.getElementById('scenes').appendChild(row);
+        overlays.push(row.querySelector('.overlay'));
+
+        // ?zoom=3 magnifies every scene, for inspecting shapes up close.
+        const zoom = Number(new URLSearchParams(location.search).get('zoom') ?? 1);
+        const ws = Blockly.inject(row.querySelector('.ws'), {
+          renderer: 'thumbnail',
+          theme: 'thumbnail',
+          zoom: {startScale: scene.scale * zoom},
+          move: {scrollbars: false, drag: false, wheel: false},
+          trashcan: false,
+          sounds: false,
+        });
+        Blockly.serialization.workspaces.load(
+          {blocks: {languageVersion: 0, blocks: scene.blocks}},
+          ws,
+        );
+        for (const [id, style] of Object.entries(scene.styles ?? {})) {
+          ws.getBlockById(id)?.setStyle(style);
+        }
+        for (const [id, text] of Object.entries(scene.warnings ?? {})) {
+          ws.getBlockById(id)?.setWarningText(text);
+        }
+        // Put workspace (0, 0) at the stage's top-left so scene x/y are pixels
+        // (divided by scale) from the corner, like the thumbnails.
+        ws.translate(0, 0);
+      }
+
+      // Measure text with the real font, not the fallback.
+      document.fonts.load('12.5pt "Google Sans"').then(() => {
+        SCENES.forEach(renderScene);
+        document.getElementById('overlay').addEventListener('input', (e) => {
+          for (const img of overlays) img.style.opacity = e.target.value;
+        });
+        for (const img of overlays) img.style.opacity = 0;
+      });
+    </script>
+  </body>
+</html>
